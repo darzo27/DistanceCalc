@@ -1,2 +1,2 @@
 # Manuva_Simple
-Locaiton sorting
+Sorting distances between latitude and longitude coordinates.
