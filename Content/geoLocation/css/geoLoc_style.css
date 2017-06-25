@@ -1,0 +1,23 @@
+body {
+  font-size: 120%;
+}
+
+#lblLocation {
+  padding: 1em;
+  background: -webkit-linear-gradient(315deg, #2fed9d, #0d8955, #0d8955, #0d8955, #0d8955, #0d8955, #0d8955, #2fed9d);;
+  width: 100%;
+  border-radius: 1em;
+  text-align: center;
+}
+
+Button {
+  /*color: black;*/
+  /*padding: 1em;
+  font-size: 130%;
+  background: lightgreen;
+  border-radius: 0.3em;*/
+}
+
+#map {
+  padding: 1em;
+}

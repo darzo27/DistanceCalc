@@ -1,647 +1,397 @@
-﻿<html>
+<html>
     <head>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function () {
-            $("#table_locs").tablesorter({ sortList: [[0, 0], [1, 0]] });
-        });
-		</script>
-    <script src="Content/tablesorter-master/jquery-latest.js"></script>
-    <script src="Content/tablesorter-master/jquery.tablesorter.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/jquery-3.1.1.js"></script>
-    
-    <link href="Content/togglecols/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/jquery-ui.css" rel="stylesheet" />
-    <link href="Content/togglecols/css/style.css" rel="stylesheet" />
-    <link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
-    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
-    <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css'/>
-          <link href="Content/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <style>
-                h1{
-            font-size: 30px;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 15px;
-            }
-            table{
-            width:100%;
-            table-layout: fixed;
-            }
-            .tbl-header{
-            background-color: rgba(255,255,255,0.3);
-            }
-            .tbl-content{
-            height:300px;
-            overflow-x:auto;
-            margin-top: 0px;
-            border: 1px solid rgba(255,255,255,0.3);
-            }
-            th{
-            padding: 20px 15px;
-            text-align: left;
-            font-weight: 500;
-            font-size: 12px;
-            color: #fff;
-            text-transform: uppercase;
-            }
-            td{
-            padding: 15px;
-            text-align: left;
-            vertical-align:middle;
-            font-weight: 300;
-            font-size: 12px;
-            color: #fff;
-            border-bottom: solid 1px rgba(255,255,255,0.1);
-            }
+        <!--TODO Does not work, to replace-->
+        <script src="Content/geoLocation/js/calcDistance_place.js"></script>
 
+        <!-- Structure -->
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/jquery-3.1.1.js"></script>
+        <!-- Get Geo Location -->
+        <link href="Content/geoLocation/css/geoLoc_style.css" rel="stylesheet" />
+        <!-- Distance Toggles -->
+        <link href="Content/togglecols/css/bootstrap-theme.min.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/jquery-ui.css" rel="stylesheet" />
+        <link href="Content/togglecols/css/style.css" rel="stylesheet" />
+        <link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+        <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css'/>
+        <link href="Content/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <style>
+                a{
+                    color:#ffffff !important;
+                }
+                a:hover{
+                    color: #ffffff !important;
+                }
+                    h1{
+                font-size: 30px;
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: 300;
+                text-align: center;
+                margin-bottom: 15px;
+                }
+                table{
+                width:100%;
+                table-layout: fixed;
+                }
+                .tbl-header{
+                background-color: rgba(255,255,255,0.3);
+                }
+                .tbl-content{
+                height:300px;
+                overflow-x:auto;
+                margin-top: 0px;
+                border: 1px solid rgba(255,255,255,0.3);
+                }
+                th{
+                padding: 20px 15px;
+                text-align: left;
+                font-weight: 500;
+                font-size: 15px;
+                color: #fff;
+                text-transform: uppercase;
+                }
+                td{
+                padding: 12px;
+                text-align: left;
+                vertical-align:middle;
+                font-weight: 300;
+                font-size: 14px;
+                color: #fff;
+                border-bottom: solid 1px rgba(255,255,255,0.1);
+                }
 
-            /* demo styles */
+                footer {
+                    position:absolute;
+                    bottom:0;
+                    width:99%;
+                    height:20px;   /* Height of the footer */
+                    background:transparent;
+                    text-align:right;
+                    vertical-align: bottom;
+                    color:black;
+                }
 
-            @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
-            body{
-            background: -webkit-linear-gradient(left, #25c481, #25b7c4);
-            background: linear-gradient(to right, #25c481, #25b7c4);
-            font-family: 'Roboto', sans-serif;
-            }
-            section{
-            margin: 50px;
-            }
-    </style>
-   </head>
+                @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+                body{
+                background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+                background: linear-gradient(to right, #25c481, #25b7c4);
+                font-family: 'Roboto', sans-serif;
+                }
+                section{
+                margin: 50px;
+                }
+        </style>
 
-<body id="MasterBody" runat="server">
+        <!--Column Sorting-->
+        <script type="text/javascript">
+            var TSort_Data = new Array ('table_locs', 'i', 's', 'g', 'i', 'g', 'g', 'g');
+            tsRegister();
+        </script>
+        <script src="Scripts/gs_sortable.js"></script>
+
+        <!--fancy btn-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="Content/fancyBtn/css/style.css">
+
+    </head>
+
+<body id="MasterBody" runat="server" style="padding-left:15px;padding-right: 15px;">
   
-<div id="PageBody" runat="server">
-    <div style="text-align:right;float:right; font-size:small">by<br/>Darshan Kassen</div>
-    <h1>L O C A T I O N S</h1>
+    <div id="PageBody" runat="server">
 
-    
-    <div class="options clearfix" style="float:right">
-        
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DMi" checked="checked"><span>Miles</span></label>
+        <h1>L O C A T I O N S</h1>
+
+        <!--Distance Toggles for Miles, Kilometres, Metres-->
+        <div class="options clearfix" style="float:right">
+            <div class="ck-button">
+                <label><input type="checkbox" value="1" name="DMi" checked="checked"><span>Miles</span></label>
+            </div>
+
+            <div class="ck-button">
+                <label><input type="checkbox" value="1" name="DKm" checked="checked"><span>Kilometres</span></label>
+            </div>
+
+            <div class="ck-button">
+                <label><input type="checkbox" value="1" name="DM" checked="checked"><span>Metres</span></label>
+            </div>
         </div>
 
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DKm" checked="checked"><span>Kilometres</span></label>
+        <table id="table_locs" style="font-size:larger;webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;!important;" class="tb1-header table table-bordered table-responsive "> <!--tableorter-->
+            <thead> <!---webkit-text-stroke-width: 1px;-webkit-text-stroke-color: black;-->
+                <tr style="font-weight: bold;">
+                    <th>Index</th>
+                    <th>Name</th>
+                    <th>Lat / Long</th>
+                    <th>Rating</th>
+                    <th class="DMi">Distance Miles</th>
+                    <th class="DKm">Distance Kilometres</th>
+                    <th class="DM">Distance Metres</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="rowp">
+                    <td>1</td>
+                    <td>Place A</td>
+                    <td>-26.0594802,28.0609437</td>
+                    <td id="pALat" style="display:none">-26.0594802</td>
+                    <td id="pALon" style="display:none">28.0609437</td>
+                    <td>5</td>
+                    <td class="DMi" id="pAMi"></td>
+                    <td class="DKm" id="pAKm"></td>
+                    <td class="DM"  id="pAM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>2</td>
+                    <td>Place B</td>
+                    <td id="pB">-26.1045986,27.90272</td>
+                    <td>2,4</td>
+                    <td class="DMi" id="pBMi"></td>
+                    <td class="DKm" id="pBKm"></td>
+                    <td class="DM"  id="pBM"></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>3</td>
+                    <td>Place C</td>
+                    <td id="pC">-26.2761961,27.8666711</td>
+                    <td>2</td>
+                    <td class="DMi" id="pCMi"></td>
+                    <td class="DKm" id="pCKm"></td>
+                    <td class="DM"  id="pCM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>4</td>
+                    <td>Place D</td>
+                    <td id="pD">-26.792252,28.4546707</td>
+                    <td>4</td>
+                    <td class="DMi" id="pDMi"></td>
+                    <td class="DKm" id="pDKm"></td>
+                    <td class="DM"  id="pDM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>5</td>
+                    <td>Place E</td>
+                    <td id="pE">-28.5134548,31.0840026</td>
+                    <td>3</td>
+                    <td class="DMi" id="pEMi"></td>
+                    <td class="DKm" id="pEKm"></td>
+                    <td class="DM"  id="pEM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>6</td>
+                    <td>Place F</td>
+                    <td id="pF">-28.5691317,29.965432</td>
+                    <td>1</td>
+                    <td class="DMi" id="pFMi"></td>
+                    <td class="DKm" id="pFKm"></td>
+                    <td class="DM"  id="pFM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>7</td>
+                    <td>Place G</td>
+                    <td id="pG">-30.0603986, 25.4507278</td>
+                    <td>2</td>
+                    <td class="DMi" id="pGMi"></td>
+                    <td class="DKm" id="pGKm"></td>
+                    <td class="DM"  id="pGM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>8</td>
+                    <td>Place H</td>
+                    <td id="pH">-33.972869, 18.4426821</td>
+                    <td>4</td>
+                    <td class="DMi" id="pHMi"></td>
+                    <td class="DKm" id="pHKm"></td>
+                    <td class="DM"  id="pHM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>9</td>
+                    <td>Place I</td>
+                    <td id="pI">-33.9618168, 18.4248128</td>
+                    <td>3</td>
+                    <td class="DMi" id="pIMi"></td>
+                    <td class="DKm" id="pIKm"></td>
+                    <td class="DM"  id="pIM" ></td>
+                </tr>
+
+                <tr class="rowp">
+                    <td>10</td>
+                    <td>Place J</td>
+                    <td id="pJ">-33.6606805,18.4530806</td>
+                    <td>4</td>
+                    <td class="DMi" id="pJMi"></td>
+                    <td class="DKm" id="pJKm"></td>
+                    <td class="DM"  id="pJM" ></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Sorting - Table BR -->
+        <div style="float:right;width: 6%;font-size:small; padding-left:5px">
+            <button class="btn-block" style="color: black; align-content:center;text-align: center;"  name='action' value='Reset sorting' onClick='tsDraw("0U", "table_locs"); tsDraw("1U"); tsDraw("2U")'>Reset sorting</button>
+            <p style="font-weight: bold;font-size:x-small;text-align: left">
+                To sort columns, click on column headers.<br/>
+                Sort up to three columns at a time by clicking on other column headers<br/>
+                Yellow being the most recent sort, down to the color red being the main sorting criteria<br/>
+            </p>
         </div>
 
-        <div class="ck-button">
-            <label><input type="checkbox" value="1" name="DM" ><span>Metres</span></label>
-        </div>
-        
-    </div>
-   
-    <table id="table_locs" style="font-size:larger" class="tb1-header table table-bordered table-responsive tablesorter">
-        <thead >
-            <tr style="font-weight:900"> 
-                <th>Index</th> 
-                <th>Name</th> 
-                <th>Lat / Long</th> 
-                <th>Rating</th> 
-                <th class="DMi">Distance Miles</th>
-                <th class="DKm">Distance Kilometres</th>
-                <th class="DM">Distance Metres</th>
-            </tr> 
-        </thead> 
+       <!--Location / Maps - Table BL-->
+       <div style="width: 100%;">
+           <!--Controls used to Update Location-->
+           <div style="text-align:left;float:left;color:white;padding-top: 15px;max-width: 20%">
+               <p id="lblLocation">Your Location (Default)<br/>
+                   Latitude: -33.893887<br/>
+                   Longitude: 18.440708
+               </p>
+               <a class="btn" data-title="Click to Update Location" style="color:white; width: 100%;" onclick="getGeoLocation()"><!--Update Location--></a>
+               <p style="color:black">
+                   1. Allow access to your location<br />
+                   2. Click a record in the table to view <br/> the straight line distance to that location.
+               </p>
+           </div>
+           <!--Display Map showing Updated Location-->
+           <div style="width: 33%;float: left;vertical-align: top">
+               <div id="map"></div>
+           </div>
 
-        <tbody> 
-            <tr class="rowp"> 
-                <td>1</td> 
-                <td>Place A</td> 
-                <td>-26.0594802,28.0609437</td>
-                <td id="pALat" style="display:none">-26.0594802</td> 
-                <td id="pALon" style="display:none">28.0609437</td> 
-                <td>5</td> 
-                <td class="DMi" id="pAMi"></td> 
-                <td class="DKm" id="pAKm"></td> 
-                <td class="DM"  id="pAM" ></td> 
-            </tr>
+           <!--Drop Down to reveal map between Your Location and Selected Place-->
+           <div class="drop" style="padding-top: 15px !important;">Straight-Line Distance to Place X</div>
+       </div>
 
-            <tr class="rowp"> 
-                <td>2</td> 
-                <td>Place B</td> 
-                <td id="pB">-26.1045986,27.90272</td> 
-                <td>2,4</td> 
-                <td class="DMi" id="pBMi"></td> 
-                <td class="DKm" id="pBKm"></td> 
-                <td class="DM"  id="pBM"></td> 
-            </tr> 
+      <!-- <br/>-->
 
-            <tr class="rowp"> 
-                <td>3</td> 
-                <td>Place C</td> 
-                <td id="pC">-26.2761961,27.8666711</td> 
-                <td>2</td> 
-                <td class="DMi" id="pCMi"></td> 
-                <td class="DKm" id="pCKm"></td> 
-                <td class="DM"  id="pCM" ></td>  
-            </tr> 
+       <footer>
+        by Darshan Kassen <br/>
+        dkassen27@gmail.com
+       </footer>
 
-            <tr class="rowp"> 
-                <td>4</td> 
-                <td>Place D</td> 
-                <td id="pD">-26.792252,28.4546707</td> 
-                <td>4</td> 
-                <td class="DMi" id="pDMi"></td> 
-                <td class="DKm" id="pDKm"></td> 
-                <td class="DM"  id="pDM" ></td> 
-            </tr> 
 
-            <tr class="rowp"> 
-                <td>5</td> 
-                <td>Place E</td> 
-                <td id="pE">-28.5134548,31.0840026</td> 
-                <td>3</td> 
-                <td class="DMi" id="pEMi"></td> 
-                <td class="DKm" id="pEKm"></td> 
-                <td class="DM"  id="pEM" ></td> 
-            </tr> 
 
-            <tr class="rowp"> 
-                <td>6</td> 
-                <td>Place F</td> 
-                <td id="pF">-28.5691317,29.965432</td> 
-                <td>1</td> 
-                <td class="DMi" id="pFMi"></td> 
-                <td class="DKm" id="pFKm"></td> 
-                <td class="DM"  id="pFM" ></td> 
-            </tr> 
+        <!--Creates a drop-down area below the table to show a map with line drawn between Users location and the location selected-->
+        <script>
+            $(".rowp").on("click", function () {
+                var info = $(this).html();
+                if ($(".drop").html() == $(this).html() || !$(".drop").hasClass('active'))          //is drop class or not active - toggle active
+                    $(".drop").slideToggle().toggleClass('active').html(info);
+                else
+                    $(".drop").html("<div id='dropMap' style='width:100%;height:500px'></div>");    //draw map in drop div
+            });
+        </script>
+        <style>
+            .drop {
+            height: 300px;
+            border: 1px solid black;
+            margin-bottom: 5px;
+            display: none;
+            float: right;
+                padding-right: 20px;
+                width: 50%;
+            max-width: 40%;
+            }
+        </style>
 
-            <tr class="rowp"> 
-                <td>7</td> 
-                <td>Place G</td> 
-                <td id="pG">-30.0603986, 25.4507278</td> 
-                <td>2</td> 
-                <td class="DMi" id="pGMi"></td> 
-                <td class="DKm" id="pGKm"></td> 
-                <td class="DM"  id="pGM" ></td> 
-            </tr> 
 
-            <tr class="rowp"> 
-                <td>8</td> 
-                <td>Place H</td> 
-                <td id="pH">-33.972869, 18.4426821</td> 
-                <td>4</td> 
-                <td class="DMi" id="pHMi"></td> 
-                <td class="DKm" id="pHKm"></td> 
-                <td class="DM"  id="pHM" ></td> 
-            </tr> 
+        <!--Google API Key used to draw own map-->
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>-->
 
-            <tr class="rowp"> 
-                <td>9</td> 
-                <td>Place I</td> 
-                <td id="pI">-33.9618168, 18.4248128</td> 
-                <td>3</td> 
-                <td class="DMi" id="pIMi"></td> 
-                <td class="DKm" id="pIKm"></td> 
-                <td class="DM"  id="pIM" ></td> 
-            </tr> 
+        <!--Draws line between two geo points on map-->
+        <script>
+            function myMap() {
+              var myLoc = new google.maps.LatLng(-33.893887, 18.440708);
+              var place_A = new google.maps.LatLng(-33.6606805,18.4530806);
 
-            <tr class="rowp"> 
-                <td>10</td> 
-                <td>Place J</td> 
-                <td id="pJ">-33.6606805,18.4530806</td> 
-                <td>4</td> 
-                <td class="DMi" id="pJMi"></td> 
-                <td class="DKm" id="pJKm"></td> 
-                <td class="DM"  id="pJM" ></td> 
-            </tr> 
-        </tbody> 
-    </table> 
 
-    <div class="drop"></div>
+              var mapCanvas = document.getElementById("dropMap");
+              var mapOptions = {center: place_A, zoom: 6};
+              var map = new google.maps.Map(mapCanvas,mapOptions);
 
-    <p >
-        To sort columns, click on column headers.
-        To sort more than one column at a time, hold SHIFT + Click on other column headers
-    </p>
+              var flightPath = new google.maps.Polyline({
+                path: [myLoc, place_A],
+                strokeColor: "#0000FF",
+                strokeOpacity: 0.8,
+                strokeWeight: 2
+              });
+              flightPath.setMap(map);
+            }
+        </script>
 
-    <div style="text-align:left;float:left;">                
-        <button onclick="calcDistances()">Determine Distances</button><br />
-        <p style="color:black">
-            1. Allow access to your location<br />
-            2. Click a record in the table to view <br/> the straight line distance to that location.                   
-        </p>
-        <p style="font-size:xx-small; padding-bottom:50px">If site not hosted on HTTPS origin, will follow default location</p>
-         
-    </div>
+        <!--Does Not Work-->
+        <script>
+            var x = document.getElementById("yourLocation");
+            var y = document.getElementById("yourLoc");
 
-    <div style="text-align:right;float:right;color:white">
-        <p id="yourLocation">(Default) Your Location<br />
-            Latitude: -33.893887<br/>
-            Longitude: 18.440708
-        </p>
-       
-        <p id="yourLoc" style="display:none"></p>
+            function getLocation()
+            {
+                if(navigator.geolocation)
+                {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                }
+                else
+                {
+                    x.innerHTML = "Your Location<br/>Latitude: " + position.coords.latitude
+                                             + "<br/>Longitude: " + position.coords.longitude;
+                    y.innerHTML = position.coords.latitude + ", " + position.coords.longitude;
+                }
+            }
+            function showError(error)
+            {
+                switch (error.code)
+                {
+                    case error.PERMISSION_DENIED:
+                        x.innerHTML = "User denied the request for Geolocation."
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        x.innerHTML = "Location information is unavailable."
+                        break;
+                    case error.TIMEOUT:
+                        x.innerHTML = "The request to get user location timed out."
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        x.innerHTML = "An unknown error occurred."
+                        break;
+                }
+            }
+            calcDistances();
+        </script>
+
+
+
+
+
+        <!-- Formatting -->
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/jquery-3.1.1.js"></script>
+        <!-- Get Geo Location -->
+        <script src="Content/geoLocation/js/geoLoc.js"></script>
+
+        <!-- Distance Toggles  -->
+        <script src="Content/togglecols/js/index.js"></script>
+        <script src="Content/togglecols/js/jquery-ui.min.js"></script>
+        <script src="Content/togglecols/js/jquery.min.js"></script>
+        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+        <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+        <!-- Draw line between two points -->
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
+        <script src="Scripts/GMap.js"></script>
+        <script src="Scripts/bootstrap.min.js"></script>
+        <script src="Scripts/jquery-3.1.1.js"></script>
+        <!--Fancy Btn-->
+        <script src="Content/fancyBtn/js/index.js"></script>
     </div>
 
-
-
-   
-    <script>
-        $(".rowp").on("click", function () {
-            var info = $(this).html();
-            if ($(".drop").html() == $(this).html() || !$(".drop").hasClass('active'))
-                $(".drop").slideToggle().toggleClass('active').html(info);
-            else
-                $(".drop").html("<div id='map' style='width:100%;height:500px'></div>");
-                                 
-        });
-    </script>
-    <style>
-        .drop {
-    height: 300px;
-    border: 1px solid black;
-    margin-bottom: 5px;
-    display: none;
-}
-    </style>
-
-    
-    <script>
-        function myMap() {
-          var myLoc = new google.maps.LatLng(-33.893887, 18.440708);
-          var place_A = new google.maps.LatLng(-33.6606805,18.4530806);
-  
-
-          var mapCanvas = document.getElementById("map");
-          var mapOptions = {center: place_A, zoom: 6};
-          var map = new google.maps.Map(mapCanvas,mapOptions);
-
-          var flightPath = new google.maps.Polyline({
-            path: [myLoc, place_A],
-            strokeColor: "#0000FF",
-            strokeOpacity: 0.8,
-            strokeWeight: 2
-          });
-          flightPath.setMap(map);
-        }
-    </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
-
-   
-    <script>
-        var x = document.getElementById("yourLocation");
-        var y = document.getElementById("yourLoc");
-
-        function getLocation()
-        {
-            if(navigator.geolocation)
-            {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            }
-            else
-            {
-                x.innerHTML = "Your Location<br/>Latitude: " + position.coords.latitude 
-                                         + "<br/>Longitude: " + position.coords.longitude;
-                y.innerHTML = position.coords.latitude + ", " + position.coords.longitude;
-            }
-        }
-        function showError(error)
-        {
-            switch (error.code)
-            {
-                case error.PERMISSION_DENIED:
-                    x.innerHTML = "User denied the request for Geolocation."
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    x.innerHTML = "Location information is unavailable."
-                    break;
-                case error.TIMEOUT:
-                    x.innerHTML = "The request to get user location timed out."
-                    break;
-                case error.UNKNOWN_ERROR:
-                    x.innerHTML = "An unknown error occurred."
-                    break;
-            }
-        }
-        calcDistances();
-    </script>
-
-   
-
-   
-    <script>
-        //A
-       A_getDistanceFromLatLonInKm(-33.893887, 18.440708, -26.0594802, 28.0609437).toFixed(1);
-        function A_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pA_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pAKm").innerHTML = pA_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pAMi").innerHTML = pA_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pAM").innerHTML = pA_Km.toFixed(2) * 1000;
-        }
-
-        function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-       B_getDistanceFromLatLonInKm(-33.893887, 18.440708, -26.1045986, 27.90272).toFixed(1);
-        function B_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pB_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pBKm").innerHTML = pB_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pBMi").innerHTML = pB_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pBM").innerHTML = pB_Km.toFixed(2) * 1000;
-                        
-        }
-        function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        C_getDistanceFromLatLonInKm(-33.893887, 18.440708, -26.2761961, 27.8666711).toFixed(1);
-        function C_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pC_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pCKm").innerHTML = pC_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pCMi").innerHTML = pC_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pCM").innerHTML = pC_Km.toFixed(2) * 1000;
-        }
-        function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        D_getDistanceFromLatLonInKm(-33.893887, 18.440708, -26.792252, 28.4546707).toFixed(1);
-        function D_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pD_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pDKm").innerHTML = pD_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pDMi").innerHTML = pD_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pDM").innerHTML = pD_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        E_getDistanceFromLatLonInKm(-33.893887, 18.440708, -28.5134548, 31.0840026).toFixed(1);
-        function E_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pE_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pEKm").innerHTML = pE_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pEMi").innerHTML = pE_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pEM").innerHTML = pE_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        F_getDistanceFromLatLonInKm(-33.893887, 18.440708, -28.5691317, 29.965432).toFixed(1);
-        function F_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pF_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pFKm").innerHTML = pF_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pFMi").innerHTML = pF_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pFM").innerHTML = pF_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        G_getDistanceFromLatLonInKm(-33.893887, 18.440708, -30.0603986, 25.4507278).toFixed(1);
-        function G_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pG_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pGKm").innerHTML = pG_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pGMi").innerHTML = pG_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pGM").innerHTML = pG_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        H_getDistanceFromLatLonInKm(-33.893887, 18.440708, -33.972869, 18.4426821).toFixed(1);
-        function H_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pH_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pHKm").innerHTML = pH_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pHMi").innerHTML = pH_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pHM").innerHTML = pH_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        I_getDistanceFromLatLonInKm(-33.893887, 18.440708, -33.9618168, 18.4248128).toFixed(1);
-        function I_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pI_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pIKm").innerHTML = pI_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pIMi").innerHTML = pI_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pIM").innerHTML = pI_Km.toFixed(2) * 1000;
-        }function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-    <script>
-
-        J_getDistanceFromLatLonInKm(-33.893887, 18.440708, -33.6606805, 18.4530806).toFixed(1);
-        function J_getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; // Radius of the earth in km
-            var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            var dLon = deg2rad(lon2 - lon1);
-            var a =
-              Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2)
-            ;
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var pJ_Km = R * c; // Distance in km
-            //return pAKm;
-
-            //Km to KM
-            document.getElementById("pJKm").innerHTML = pJ_Km.toFixed(2)
-
-            //Km to Miles
-            document.getElementById("pJMi").innerHTML = pJ_Km.toFixed(2) * 0.62137;
-
-            //Km to Meters
-            document.getElementById("pJM").innerHTML = pJ_Km.toFixed(2) * 1000;
-        }
-
-        function deg2rad(deg) {
-            return deg * (Math.PI / 180)
-        }
-    </script>
-
-
-
-
-   
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function () {
-            $("#table_locs").tablesorter({ sortList: [[0, 0], [1, 0]] });
-        });
-	</script>
-    <script src="Content/tablesorter-master/jquery-latest.js"></script>
-    <script src="Content/tablesorter-master/jquery.tablesorter.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/jquery-3.1.1.js"></script>
-   
-    <script src="Content/togglecols/js/index.js"></script>        
-    <script src="Content/togglecols/js/jquery-ui.min.js"></script>
-    <script src="Content/togglecols/js/jquery.min.js"></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
-    <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
-    
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&libraries=geometry"></script>
-    <script src="Scripts/GMap.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
-    <script src="Scripts/jquery-3.1.1.js"></script>
-    <script src="Content/tablesorter-master/jquery-latest.js"></script>
-    <script src="Content/tablesorter-master/jquery.tablesorter.js"></script>
-</div>
 </body>
 
 </html>

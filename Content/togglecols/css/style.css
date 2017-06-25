@@ -13,7 +13,7 @@
     border:1px solid #aaa;
     overflow:auto;
     float:left;
-    color:#aaa;
+    color:#000;
 }
 .ck-button:hover {
     background-color:#ddd;
@@ -33,6 +33,6 @@
     top:-20px;
 }
 .ck-button input:checked + span {
-    color:#111;
+    color:#fff;
 }
 
